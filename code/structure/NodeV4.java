@@ -142,4 +142,18 @@ public class NodeV4 implements Node {
 		
 		return lv;
 	}
+	
+	public Integer[] getHead()
+	{
+		Integer[] rs = null;
+		List<Integer> list = new ArrayList<>();
+		
+		for(int i=0; i<this.getKey().length(); i++)
+			if (this.getKey().charAt(i)=='1')
+				list.add(i);
+		
+		list.toArray(rs);
+		
+		return rs;
+	}
 }
