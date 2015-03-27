@@ -51,13 +51,33 @@ public class StringKeyTableV2 {
 		}
 	}
 
-	public Map<String, Integer> getItemSetInString() {
+	public Map<String, Integer> getChipItemSetInString() {
 		Map<String, Integer> rs = new HashMap<>();
 
 		for (int i = 0; i < this.getItemSet().length; i++) {
 			String key = "";
 
 			for (int j = 0; j < this.getRowLength(); j++)
+				key += this.getItemSet()[i][j];
+
+			if (rs.containsKey(key)) {
+				int temp = rs.get(key) + 1;
+				rs.remove(key);
+				rs.put(key, temp);
+			} else
+				rs.put(key, 1);
+		}
+
+		return rs;
+	}
+	
+	public Map<String, Integer> getGeneItemSetInString() {
+		Map<String, Integer> rs = new HashMap<>();
+
+		for (int j = 0; j < this.getRowLength(); j++) {
+			String key = "";
+
+			for (int i = 0; i < this.getItemSet().length; i++)
 				key += this.getItemSet()[i][j];
 
 			if (rs.containsKey(key)) {

@@ -40,8 +40,17 @@ public class LatticeV5 implements Lattice {
 	}
 
 	@Override
-	public void init() throws WrongPositionException {
-		Map<String, Integer> itemSet = this.tables.getItemSetInString();
+	public void initChip() throws WrongPositionException {
+		Map<String, Integer> itemSet = this.tables.getChipItemSetInString();
+		System.out.println("--> We have " + itemSet.size() + " itemset");
+		for (Entry<String, Integer> entry : itemSet.entrySet())
+			this.addNode(new NodeV4(entry.getKey(), entry.getValue(),
+					new ArrayList<NodeV4>()));
+	}
+	
+	@Override
+	public void initGene() throws WrongPositionException {
+		Map<String, Integer> itemSet = this.tables.getGeneItemSetInString();
 		System.out.println("--> We have " + itemSet.size() + " itemset");
 		for (Entry<String, Integer> entry : itemSet.entrySet())
 			this.addNode(new NodeV4(entry.getKey(), entry.getValue(),
