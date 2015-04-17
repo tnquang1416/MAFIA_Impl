@@ -15,11 +15,13 @@ public class NodeV4 implements Node {
 	private String key;
 	private int support;
 	private List<NodeV4> childs;
+	private boolean flag;
 
 	public NodeV4() {
 		key = "";
 		support = 0;
 		childs = new ArrayList<>();
+		setFlag(false);
 
 		while (key.length() < NodeV4.defaultKeyLength)
 			key += "0";
@@ -158,5 +160,13 @@ public class NodeV4 implements Node {
 		list.toArray(rs);
 		
 		return rs;
+	}
+
+	public boolean isChecked() {
+		return flag;
+	}
+
+	public void setFlag(boolean flag) {
+		this.flag = flag;
 	}
 }
