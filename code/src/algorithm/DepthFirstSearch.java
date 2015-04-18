@@ -27,22 +27,20 @@ public class DepthFirstSearch {
 		this.lattice = lattice;
 	}
 
-	/* duyet tu root */
+	/* visit root */
 	public void rootDFS(LatticeV5 lattice){
 		doDFS(lattice.getRoot());
 	}
 		
 	
-	/* duyet cac dinh con   */
-	private void doDFS(NodeV4 V){
-		
-		for (NodeV4 i : V.getAllChilds()){
-			if(i.isChecked() == true) { 
-				V.removeChild(i);
+	/* visit all childs */
+	private void doDFS(NodeV4 v){
+		for (int i=0; i < v.getAllChilds().size();i++){
+			if(v.isChecked() == true) { 
+				v.removeChild(i);
+				i=i-1;
 			}
-			doDFS(i);
+			else doDFS(v);
 		}	
 	}
-		
-
 }
