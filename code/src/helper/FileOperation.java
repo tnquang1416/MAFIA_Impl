@@ -8,21 +8,34 @@ import java.io.IOException;
 /**
  * 
  * @author TRAN Nhat Quang
- *
+ * 
  */
 public class FileOperation {
-	public static String[] readFile(String path) throws IOException
-	{
+	public static String[] readFile(String path) throws IOException {
 		String rs = "";
-		
-		BufferedReader reader = new BufferedReader(new FileReader(new File(path)));
+
+		BufferedReader reader = new BufferedReader(new FileReader(
+				new File(path)));
 		String line = null;
-		
-		while((line = reader.readLine())!= null)
-		{
+
+		while ((line = reader.readLine()) != null) {
 			rs += line + "\n";
 		}
-		
-		return rs.split("\n");
+
+		return FileOperation.convert(rs.split("\n"));
+	}
+
+	private static String[] convert(String[] input) {
+		String[] rs = new String[input.length - 1];
+
+		for (int i = 1; i < input.length; i++) {
+			rs[i - 1] = "";
+			String[] temp = input[i].split("\t");
+
+			for (int j = 1; j < temp.length; j++)
+				rs[i - 1] += (temp[j] + "\t");
+		}
+
+		return rs;
 	}
 }

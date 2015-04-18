@@ -8,31 +8,22 @@ import java.util.Map.Entry;
 
 import data.Data;
 import exception.DuplicatedNode;
+import exception.NullArrayException;
 import exception.WrongPositionException;
 /**
  * 
  * @author TRAN Nhat Quang
  *
  */
-public class LatticeV5 implements Lattice {
-	private StringKeyTableV2 tables;
+public class LatticeV6 implements Lattice {
 	private NodeV4 root;
 	private Map<String, NodeV4> list;
+	private Data data;
 
-	public LatticeV5(String[] input) {
-		this.tables = new StringKeyTableV2(input);
+	public LatticeV6(Data input) {
+		this.data = input;
 
-		NodeV4.setDefaultKeyLength(this.tables.getKeySize());
-		this.root = new NodeV4();
-
-		list = new HashMap<String, NodeV4>();
-		list.put(root.getKey(), root);
-	}
-
-	public LatticeV5(Data input) {
-		this.tables = new StringKeyTableV2(input.getFinalData());
-
-		NodeV4.setDefaultKeyLength(this.tables.getKeySize());
+		NodeV4.setDefaultKeyLength(this.data.getInfoLength());
 		this.root = new NodeV4();
 
 		list = new HashMap<String, NodeV4>();
@@ -41,20 +32,31 @@ public class LatticeV5 implements Lattice {
 
 	@Override
 	public void initChip() throws WrongPositionException {
-		Map<String, Integer> itemSet = this.tables.getChipItemSetInString();
-		System.out.println("--> We have " + itemSet.size() + " itemset");
-		for (Entry<String, Integer> entry : itemSet.entrySet())
-			this.addNode(new NodeV4(entry.getKey(), entry.getValue(),
-					new ArrayList<NodeV4>()));
+		try {
+			Map<String, Integer> itemSet = this.data.getChips();
+			System.out.println("--> We have " + itemSet.size() + " itemset");
+			for (Entry<String, Integer> entry : itemSet.entrySet())
+				this.addNode(new NodeV4(entry.getKey(), entry.getValue(),
+						new ArrayList<NodeV4>()));
+		} catch (NullArrayException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	public void initGene() throws WrongPositionException {
-		Map<String, Integer> itemSet = this.tables.getGeneItemSetInString();
-		System.out.println("--> We have " + itemSet.size() + " itemset");
-		for (Entry<String, Integer> entry : itemSet.entrySet())
-			this.addNode(new NodeV4(entry.getKey(), entry.getValue(),
-					new ArrayList<NodeV4>()));
+		Map<String, Integer> itemSet;
+		try {
+			itemSet = this.data.getGenes();
+			System.out.println("--> We have " + itemSet.size() + " itemset");
+			for (Entry<String, Integer> entry : itemSet.entrySet())
+				this.addNode(new NodeV4(entry.getKey(), entry.getValue(),
+						new ArrayList<NodeV4>()));
+		} catch (NullArrayException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override

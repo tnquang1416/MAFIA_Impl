@@ -1,7 +1,5 @@
 package data;
 
-import helper.FileOperation;
-
 import java.io.IOException;
 
 /**
@@ -9,25 +7,18 @@ import java.io.IOException;
  * @author TRAN Nhat Quang
  * 
  */
-public class OverlapData implements Data {
-	private String[] input;
-
+public class OverlapData extends Data {
 	public OverlapData(String file) throws IOException {
-		this.readFromFile(file);
+		super(file);
 	}
 
 	public OverlapData(String[] input) {
-		this.input = input;
+		super(input);
 	}
 
 	@Override
-	public void readFromFile(String file) throws IOException {
-		this.input = FileOperation.readFile(file);
+	protected void prepareDdata() {
+		// TODO Auto-generated method stub
+		
 	}
-
-	@Override
-	public String[] getFinalData() {
-		return input;
-	}
-
 }

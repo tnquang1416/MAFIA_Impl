@@ -14,9 +14,9 @@ public class TestLatticeV5 {
 			//String file = "input.txt";
 			String file = "data_gauss_split_0.1_1.txt_h";
 			LatticeV5 lattice = new LatticeV5(new NoiseData(file).getFinalData());
-			lattice.init();
+			lattice.initChip();
 			lattice.toString();
-			System.out.println("No.Node: " + lattice.getNoNode());
+			System.out.println("No.Node: " + lattice.getTotalNoNode());
 		} catch (IOException | WrongPositionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
