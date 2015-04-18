@@ -87,6 +87,14 @@ public class NodeV4 implements Node {
 	public List<NodeV4> getAllChilds() {
 		return this.childs;
 	}
+	
+	public boolean removeChild(NodeV4 node){
+		return this.getAllChilds().remove(node);
+	}
+	
+	public NodeV4 removeChild(int index){
+		return this.getAllChilds().remove(index);
+	}
 
 	public List<String> getAllSupKey() {
 		List<String> rs = new ArrayList<>();
