@@ -177,4 +177,23 @@ public class NodeV4 implements Node {
 	public void setFlag(boolean flag) {
 		this.flag = flag;
 	}
+	
+	public String getHUT(){
+		StringBuilder rs = new StringBuilder("");
+		int pos = 0;
+
+		while (pos < NodeV4.defaultKeyLength){
+			rs.append('0');
+			
+			for (NodeV4 node: this.childs)
+				if (node.getKey().charAt(pos) == '1'){
+					rs.setCharAt(pos, '1');
+					break;
+				}
+			
+			pos++;
+		}
+		
+		return rs.toString();
+	}
 }

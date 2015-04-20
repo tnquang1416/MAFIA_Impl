@@ -97,6 +97,10 @@ public class LatticeV6 implements Lattice {
 	public NodeV4 getRoot() {
 		return root;
 	}
+	
+	public NodeV4 getNode(String key){
+		return this.list.get(key);
+	}
 
 	public int getTotalNoNode() {
 		return this.list.size();
