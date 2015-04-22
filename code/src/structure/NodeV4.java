@@ -15,13 +15,11 @@ public class NodeV4 implements Node {
 	private String key;
 	private int support;
 	private List<NodeV4> childs;
-	private boolean flag;
 
 	public NodeV4() {
 		key = "";
 		support = 0;
 		childs = new ArrayList<>();
-		setFlag(false);
 
 		while (key.length() < NodeV4.defaultKeyLength)
 			key += "0";
@@ -156,26 +154,14 @@ public class NodeV4 implements Node {
 		return lv;
 	}
 	
-	public Integer[] getHead()
-	{
-		Integer[] rs = null;
+	public List<Integer> getHead() {
 		List<Integer> list = new ArrayList<>();
-		
-		for(int i=0; i<this.getKey().length(); i++)
-			if (this.getKey().charAt(i)=='1')
+
+		for (int i = 0; i < this.getKey().length(); i++)
+			if (this.getKey().charAt(i) == '1')
 				list.add(i);
-		
-		list.toArray(rs);
-		
-		return rs;
-	}
 
-	public boolean isChecked() {
-		return flag;
-	}
-
-	public void setFlag(boolean flag) {
-		this.flag = flag;
+		return list;
 	}
 	
 	public String getHUT(){
@@ -195,5 +181,35 @@ public class NodeV4 implements Node {
 		}
 		
 		return rs.toString();
+	}
+
+	public int getLeftMostIndexNode() {
+		int tempIndex = -1;
+		int min = Integer.MAX_VALUE;
+
+		for (int i = 0; i < this.childs.size(); i++) {
+			List<Integer> temp = this.getAllChilds().get(i).getHead();
+			temp.removeAll(this.getHead());
+
+			if (min > temp.get(0)) {
+				min = temp.get(0);
+				tempIndex = i;
+			}
+		}
+
+		return tempIndex;
+	}
+
+	/**
+	 * 
+	 * @return null if node does not have child
+	 */
+	public NodeV4 getLeftMostNode() {
+		int index = this.getLeftMostIndexNode();
+		
+		if (index >= 0)
+			return this.getAllChilds().get(index);
+		
+		return null;
 	}
 }
