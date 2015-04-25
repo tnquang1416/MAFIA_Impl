@@ -1,0 +1,12 @@
+probeset	chip0	chip1	chip2	chip3	chip4	chip5	chip6	chip7
+gene0	1	1	1	1	0	0	0	0
+gene1	1	1	1	1	0	0	0	0
+gene3	1	1	1	1	0	0	0	0
+gene4	0	0	1	1	1	1	0	0
+gene5	0	0	1	1	1	1	0	0
+gene6	0	0	1	1	1	1	0	0
+gene7	0	0	0	1	1	1	1	0
+gene8	0	0	0	1	1	1	1	0
+gene9	0	0	0	1	1	1	1	0
+gene10	0	0	0	0	0	1	1	1
+gene11	0	0	0	0	0	1	1	1
