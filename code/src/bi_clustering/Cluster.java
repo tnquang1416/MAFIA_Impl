@@ -55,4 +55,12 @@ public class Cluster {
 
 		return new AbstractMap.SimpleEntry<String, Integer>(key, this.col.size());
 	}
+	
+	public List<Integer> getGenes(){
+		return this.row;
+	}
+	
+	public List<Integer> getChips(){
+		return this.col;
+	}
 }

@@ -4,6 +4,7 @@ import helper.FileOperation;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -25,7 +26,7 @@ public abstract class Data {
 	public Data(String file) throws IOException {
 		this.readFromFile(file);
 		this.length = this.data.length;
-		this.lengthInfo = this.data[0].length();
+		this.lengthInfo = this.data[0].split("\t").length;
 	}
 
 	public void readFromFile(String file) throws IOException {
@@ -36,8 +37,7 @@ public abstract class Data {
 		return data;
 	};
 
-	public Map<String, Integer> getGenes()
-			throws NullArrayException {
+	public Map<String, Integer> getGenes() throws NullArrayException {
 		Map<String, Integer> rs = new HashMap<String, Integer>();
 
 		for (Cluster c : BiMax.doBiMax(this.getFinalData())) {
@@ -46,10 +46,13 @@ public abstract class Data {
 		}
 
 		return rs;
-	};
+	}
 
-	public Map<String, Integer> getChips()
-			throws NullArrayException {
+	public List<Cluster> getCluster() throws NullArrayException {
+		return BiMax.doBiMax(this.getFinalData());
+	}
+
+	public Map<String, Integer> getChips() throws NullArrayException {
 		Map<String, Integer> rs = new HashMap<String, Integer>();
 
 		for (Cluster c : BiMax.doBiMax(this.getFinalData())) {

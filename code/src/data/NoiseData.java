@@ -15,7 +15,7 @@ public class NoiseData extends Data {
 
 	public NoiseData(String[] input) {
 		super(input);
-		this.normalizeData();
+		this.updateData(this.normalizeMinMax());
 		this.min = Float.MAX_VALUE;
 		this.max = Float.MIN_NORMAL;
 	}
@@ -28,14 +28,14 @@ public class NoiseData extends Data {
 	}
 
 	private float[][] convertToFloat() {
-		float[][] rsDouble = new float[this.getFinalData().length - 1][this
-				.getFinalData()[0].split("\t").length - 1];
+		float[][] rsDouble = new float[this.getFinalData().length][this
+				.getFinalData()[0].split("\t").length];
 
-		for (int i = 1; i < this.getFinalData().length; i++) {
+		for (int i = 0; i < this.getFinalData().length; i++) {
 			String[] temp = this.getFinalData()[i].split("\t");
-			for (int j = 1; j < temp.length; j++) {
+			for (int j = 0; j < temp.length; j++) {
 				float value = Float.parseFloat(temp[j]);
-				rsDouble[i - 1][j - 1] = value;
+				rsDouble[i][j] = value;
 
 				if (this.min > value)
 					this.min = value;

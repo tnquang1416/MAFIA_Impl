@@ -137,8 +137,14 @@ public class BiMax {
 		List<Integer> rowReduced = BiMax.reduce(Z, row, column);
 
 		if (rowReduced.size() > 0) {
-			List<Integer> count = BiMax.getColOfHighBit(rowReduced.get(0),
+			List<Integer> count;
+			int index = 0;
+			do {
+				count = BiMax.getColOfHighBit(rowReduced.get(index),
 					column);
+				index++;
+			} while(count.size() == column.size() && index < rowReduced.size());
+			
 			if (count.size() > 0 && count.size() < column.size())
 				ListHandle.addAll(info.cU, count);
 			else
