@@ -11,13 +11,19 @@ import java.util.List;
  * 
  */
 public class NodeV6 {
-	private static String defaultKey;
+	private static String defaultKey = "0000000000";
 	private List<Integer> head;
 	private List<Integer> tail;
 
 	public NodeV6() {
 		this.head = new ArrayList<>();
 		this.tail = new ArrayList<>();
+	}
+	
+	public NodeV6(List<Integer> head) {
+		this.head = new ArrayList<>();
+		this.tail = new ArrayList<>();
+		this.head.addAll(head);
 	}
 
 	public NodeV6(List<Integer> head, List<Integer> tail) {
@@ -37,11 +43,9 @@ public class NodeV6 {
 	}
 
 	public static void setDefaultKey(int i) {
-		String temp = "";
+		NodeV6.defaultKey = "";
 		for (int j = 0; j < i; j++)
-			temp += "0";
-
-		NodeV6.defaultKey = temp;
+			NodeV6.defaultKey += "0";
 	}
 
 	public String getKey() {
@@ -126,5 +130,27 @@ public class NodeV6 {
 		}
 
 		return NodeV6.defaultKey;
+	}
+
+	public static StringBuilder getTempKey(List<Integer> head) {
+		StringBuilder rs = new StringBuilder(NodeV6.defaultKey);
+
+		for (int i : head)
+			rs.setCharAt(i, '1');
+
+		return rs;
+	}
+	
+	public List<String> getAllSubKeys(){
+		List<String> keys = new ArrayList<>();
+		StringBuilder temp = new StringBuilder(this.getKey());
+		
+		for (int i : tail){
+			temp.setCharAt(i, '1');
+			keys.add(temp.toString());
+			temp.setCharAt(i, '0');
+		}
+		
+		return keys;
 	}
 }
