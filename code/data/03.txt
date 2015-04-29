@@ -1,0 +1,4 @@
+probeset	chip0	chip1	chip2	chip3
+gene0	1	1	0	1
+gene1	1	1	0	1
+gene3	1	1	1	1

@@ -3,7 +3,9 @@ package helper;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * 
@@ -37,5 +39,17 @@ public class FileOperation {
 		}
 
 		return rs;
+	}
+	
+	public static void saveToFile(String path, String content){
+		try {
+			FileWriter fw = new FileWriter(path);
+			
+			fw.write(content);
+			fw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
