@@ -63,7 +63,7 @@ public class Algorithm {
 		}
 		
 		/*check c is leaf and c.head not in MFI*/
-		if(lattice.getSupport(c)==0 && !mfi.contains(c)){
+		if(lattice.getAllSubNodes(c).size()==0 && !mfi.contains(c)){
 			mfi.add(c);
 		}
 	}
@@ -88,7 +88,7 @@ public class Algorithm {
 				HUTMFI(newNode,mfi);
 			}
 		}
-		if(c.getTail().size()==0 && !mfi.contains(c)){
+		if(!mfi.contains(c)){
 			mfi.add(c);
 		}
 	}
