@@ -2,6 +2,8 @@ package data;
 
 import java.io.IOException;
 
+import exception.InputErrorException;
+
 /**
  * 
  * @author TRAN Nhat Quang
@@ -13,41 +15,45 @@ public class NoiseData extends Data {
 	private int newMin = 0;
 	private int newMax = 1;
 
-	public NoiseData(String[] input) {
+	public NoiseData(String[] input) throws InputErrorException {
 		super(input);
 		this.updateData(this.normalizeMinMax());
 		this.min = Float.MAX_VALUE;
 		this.max = Float.MIN_NORMAL;
 	}
 
-	public NoiseData(String file) throws IOException {
+	public NoiseData(String file) throws IOException, InputErrorException {
 		super(file);
 		this.updateData(this.normalizeMinMax());
 		this.min = Float.MAX_VALUE;
 		this.max = Float.MIN_NORMAL;
 	}
 
-	private float[][] convertToFloat() {
+	private float[][] convertToFloat() throws InputErrorException {
 		float[][] rsDouble = new float[this.getFinalData().length][this
 				.getFinalData()[0].split("\t").length];
 
-		for (int i = 0; i < this.getFinalData().length; i++) {
-			String[] temp = this.getFinalData()[i].split("\t");
-			for (int j = 0; j < temp.length; j++) {
-				float value = Float.parseFloat(temp[j]);
-				rsDouble[i][j] = value;
+		try {
+			for (int i = 0; i < this.getFinalData().length; i++) {
+				String[] temp = this.getFinalData()[i].split("\t");
+				for (int j = 0; j < temp.length; j++) {
+					float value = Float.parseFloat(temp[j]);
+					rsDouble[i][j] = value;
 
-				if (this.min > value)
-					this.min = value;
-				if (this.max < value)
-					this.max = value;
-			}
+					if (this.min > value)
+						this.min = value;
+					if (this.max < value)
+						this.max = value;
+				}
+			}	
+		} catch (ArrayIndexOutOfBoundsException e) {
+			throw new InputErrorException();
 		}
 
 		return rsDouble;
 	}
 
-	public String[] normalizeMinMax() {
+	public String[] normalizeMinMax() throws InputErrorException {
 		float[][] temp = this.convertToFloat();
 		String[] rs = new String[temp.length];
 
@@ -69,8 +75,9 @@ public class NoiseData extends Data {
 	 * x% discretization method
 	 * 
 	 * @return
+	 * @throws InputErrorException 
 	 */
-	public String[] normalizeData() {
+	public String[] normalizeData() throws InputErrorException {
 		float[][] temp = this.convertToFloat();
 		double beta = 0.5 * this.max;
 		String[] rs = new String[temp.length];

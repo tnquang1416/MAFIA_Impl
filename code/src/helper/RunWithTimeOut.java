@@ -32,7 +32,7 @@ public class RunWithTimeOut implements Runnable {
 			Timer watch = new Timer();
 
 			this.lattice = new LatticeV9(data);
-			//this.lattice.generateByGenes();
+			this.lattice.generateByGenes();
 
 			return this.input + " takes " + watch.stop() + "s";
 		} catch (NullArrayException e) {

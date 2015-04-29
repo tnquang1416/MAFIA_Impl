@@ -1,14 +1,12 @@
 package structure;
 
 import helper.Timer;
+import helper.Trace;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
-import bi_clustering.BiMax;
 import bi_clustering.Cluster;
 import data.Data;
 import exception.NullArrayException;
@@ -20,8 +18,9 @@ import exception.NullArrayException;
  */
 public class LatticeV8 {
 	private NodeV6 root;
-	private Map<String, NodeV6> list;
-	private List<Cluster> clusters;
+	//private Map<String, NodeV6> list;
+	private Data data;
+	private Trace list;
 
 	public LatticeV8(Data input) throws NullArrayException {
 		int keyLength = input.getLength();
@@ -29,10 +28,10 @@ public class LatticeV8 {
 
 		this.root = new NodeV6();
 
-		list = new HashMap<String, NodeV6>();
+		//list = new HashMap<String, NodeV6>();
+		list = new Trace();
 		list.put(root.getKey(), root);
-		this.clusters = new ArrayList<>();
-		this.clusters.addAll(BiMax.doBiMax(input.getFinalData()));
+		this.data = input;
 	}
 
 	/*
@@ -51,17 +50,15 @@ public class LatticeV8 {
 	 * this.clusters.indexOf(c) + " with " + watch.stop() + "s"); } }
 	 */
 
-	public void generateByGenes() {
-		System.out.println(this.clusters.size() + " clusters");
-		for (Cluster c : this.clusters)
-			System.out.println("--> " + c.getGenes().toString());
+	public void generateByGenes() throws NullArrayException {
+		//System.out.println(this.data.getCluster().size() + " clusters");
 
-		for (Cluster c : this.clusters) {
+		for (Cluster c : this.data.getCluster()) {
 			Timer watch = new Timer();
 
 			this.generateFromNode(c.getGenes());
 
-			System.out.println("Done cluster " + this.clusters.indexOf(c)
+			System.out.println("Done cluster " + this.data.getCluster().indexOf(c)
 					+ " with " + watch.stop() + "s");
 		}
 	}
@@ -114,13 +111,17 @@ public class LatticeV8 {
 	}
 
 	private void generateFromNode(List<Integer> head) {
+		// System.out.println(head + " and ");
 		StringBuilder key = NodeV6.getTempKey(head);
 
 		if (this.list.containsKey(key.toString()))
 			return;
 		else {
+			// System.out.println("--> store");
 			NodeV6 node = new NodeV6(head);
 			List<Integer> temp = new ArrayList<>();
+
+			this.storeNode(node);
 
 			for (int i = 0; i < head.size(); i++) {
 				temp.clear();
@@ -129,19 +130,23 @@ public class LatticeV8 {
 
 				this.generateFromNode(temp, head.get(i));
 			}
-
-			this.storeNode(node);
 		}
 	}
-	
-	private void generateFromNode(List<Integer> head, int tail) {
-		StringBuilder key = NodeV6.getTempKey(head);
 
-		if (this.list.containsKey(key.toString()))
-			this.list.get(key.toString()).addTail(tail);
-		else {
+	private void generateFromNode(List<Integer> head, int tail) {
+		// System.out.println(head + " and " + tail);
+		StringBuilder key = NodeV6.getTempKey(head);
+		NodeV6 tempNode = this.list.get(key.toString());
+		if (tempNode != null) {
+			// System.out.println("--> add" + tail + " to " + head);
+			tempNode.addTail(tail);
+		} else {
+			// System.out.println("--> store");
 			NodeV6 node = new NodeV6(head);
+			node.addTail(tail);
 			List<Integer> temp = new ArrayList<>();
+
+			this.storeNode(node);
 
 			for (int i = 0; i < head.size(); i++) {
 				temp.clear();
@@ -150,8 +155,6 @@ public class LatticeV8 {
 
 				this.generateFromNode(temp, head.get(i));
 			}
-
-			this.storeNode(node);
 		}
 	}
 
@@ -184,18 +187,23 @@ public class LatticeV8 {
 
 		for (Entry<String, NodeV6> entry : this.list.entrySet()) {
 			System.out.println(entry.getValue().toString());
-			System.out.println("--> " + entry.getKey() + ": "
-					+ this.getSupport(entry.getValue()));
+			try {
+				System.out.println("--> " + entry.getKey() + ": "
+						+ this.getSupport(entry.getValue()));
+			} catch (NullArrayException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		System.out.println("Total nodes: " + this.list.size());
 
 		return rs;
 	}
 
-	public int getSupport(NodeV6 node) {
+	public int getSupport(NodeV6 node) throws NullArrayException {
 		int supp = 0;
 
-		for (Cluster c : this.clusters)
+		for (Cluster c : this.data.getCluster())
 			if (c.getGenes().containsAll(node.getHead()))
 				supp += c.getChips().size();
 
@@ -205,18 +213,18 @@ public class LatticeV8 {
 	private void storeNode(NodeV6 node) {
 		this.list.put(node.getKey(), node);
 	}
-	
+
 	/**
 	 * 
 	 * @param node
 	 * @return list of subnode of node, list is empty if we have no subnode
 	 */
-	public List<NodeV6> getAllSubNodes(NodeV6 node){
+	public List<NodeV6> getAllSubNodes(NodeV6 node) {
 		List<NodeV6> nodes = new ArrayList<>();
-		
-		for (String s: node.getAllSubKeys())
+
+		for (String s : node.getAllSubKeys())
 			nodes.add(this.list.get(s));
-		
+
 		return nodes;
 	}
 }

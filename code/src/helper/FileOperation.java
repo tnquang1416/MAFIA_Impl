@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * 
@@ -16,6 +15,7 @@ public class FileOperation {
 	public static String[] readFile(String path) throws IOException {
 		String rs = "";
 
+		@SuppressWarnings("resource")
 		BufferedReader reader = new BufferedReader(new FileReader(
 				new File(path)));
 		String line = null;
@@ -43,7 +43,7 @@ public class FileOperation {
 	
 	public static void saveToFile(String path, String content){
 		try {
-			FileWriter fw = new FileWriter(path);
+			FileWriter fw = new FileWriter(path, true);
 			
 			fw.write(content);
 			fw.close();

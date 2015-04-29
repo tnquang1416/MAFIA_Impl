@@ -2,22 +2,24 @@ import helper.Timer;
 
 import java.io.IOException;
 
-import structure.LatticeV8;
+import structure.LatticeV9;
+import data.Data;
 import data.NoiseData;
 
-public class TestLatticeV8 {
+public class TestLatticeV9 {
 
 	public static void main(String[] args) {
 		Timer watch = new Timer();
 
 		try {
-			//NoiseData data = new NoiseData("SimpleInput.txt");
-			//NoiseData data = new NoiseData("input1.txt");
-			 NoiseData data = new NoiseData("data_gauss_split_0.1_1.txt_h");
-			LatticeV8 lattice = new LatticeV8(data);
+			//Data data = new NoiseData("SimpleInput.txt");
+			//NoiseData data = new NoiseData("input.txt");
+			//NoiseData data = new NoiseData("data_gauss_split_0.1_1.txt_h");
+			Data data  = new NoiseData("data/data_gauss_split_0_9.txt_h");
+			LatticeV9 lattice = new LatticeV9(data);
 
 			lattice.generateByGenes();
-			System.out.println(lattice);
+			//System.out.println(lattice.getRoot());
 			//System.out.println(((LatticeV7) lattice).getRoot().getSupport());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

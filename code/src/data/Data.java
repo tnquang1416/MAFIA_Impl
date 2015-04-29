@@ -3,6 +3,7 @@ package data;
 import helper.FileOperation;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,17 +17,20 @@ public abstract class Data {
 	private String[] data;
 	private int length;
 	private int lengthInfo;
+	private List<Cluster> clusters;
 
 	public Data(String[] input) {
 		this.data = input;
 		this.length = this.data.length;
 		this.lengthInfo = this.data[0].length();
+		this.clusters = new ArrayList<Cluster>();
 	}
 
 	public Data(String file) throws IOException {
 		this.readFromFile(file);
 		this.length = this.data.length;
 		this.lengthInfo = this.data[0].split("\t").length;
+		this.clusters = new ArrayList<Cluster>();
 	}
 
 	public void readFromFile(String file) throws IOException {
@@ -35,12 +39,15 @@ public abstract class Data {
 
 	public String[] getFinalData() {
 		return data;
-	};
+	}
 
 	public Map<String, Integer> getGenes() throws NullArrayException {
+		if (this.clusters.size() < 1)
+			this.clusters.addAll(new BiMax().doBiMax(this.getFinalData()));
+
 		Map<String, Integer> rs = new HashMap<String, Integer>();
 
-		for (Cluster c : BiMax.doBiMax(this.getFinalData())) {
+		for (Cluster c : this.clusters) {
 			Entry<String, Integer> entry = c.getGenes(this.getInfoLength());
 			rs.put(entry.getKey(), entry.getValue());
 		}
@@ -49,13 +56,19 @@ public abstract class Data {
 	}
 
 	public List<Cluster> getCluster() throws NullArrayException {
-		return BiMax.doBiMax(this.getFinalData());
+		if (this.clusters.size() < 1)
+			this.clusters.addAll(new BiMax().doBiMax(this.getFinalData()));
+
+		return this.clusters;
 	}
 
 	public Map<String, Integer> getChips() throws NullArrayException {
+		if (this.clusters.size() < 1)
+			this.clusters.addAll(new BiMax().doBiMax(this.getFinalData()));
+
 		Map<String, Integer> rs = new HashMap<String, Integer>();
 
-		for (Cluster c : BiMax.doBiMax(this.getFinalData())) {
+		for (Cluster c : this.clusters) {
 			Entry<String, Integer> entry = c.getChips(this.getLength());
 			rs.put(entry.getKey(), entry.getValue());
 		}
