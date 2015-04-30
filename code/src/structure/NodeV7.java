@@ -198,4 +198,14 @@ public class NodeV7 {
 
 		return null;
 	}
+
+	public NodeV7 getNode(String subKey) {
+		List<Integer> subHead = new ArrayList<>();
+		
+		for (int i=0; i<subKey.length(); i++)
+			if (subKey.charAt(i) == '1')
+				subHead.add(i);
+		
+		return this.getNode(subHead);
+	}
 }

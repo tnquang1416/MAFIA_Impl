@@ -97,6 +97,10 @@ public class LatticeV9 {
 	public NodeV7 getNode(List<Integer> subHead) {
 		return root.getNode(subHead);
 	}
+	
+	public NodeV7 getNode(String subKey) {
+		return root.getNode(subKey);
+	}
 
 	@Override
 	public String toString() {
