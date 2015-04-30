@@ -50,13 +50,8 @@ public class AlgorithmV2 {
 		for (int i=0 ; i< lattice.getAllSubNodes(c).size();i++){
 			newNode = lattice.getAllSubNodes(c).get(i);          //node C U i
 			if(lattice.getSupport(newNode)==lattice.getSupport(c)){
-								
-				//Move in from i to c.head
-				temp = newNode;
-			    newNode = c;
-			    c = temp;
+				c = newNode;                         //Move in from i to c.head
 			}
-			
 			else 
 				if (lattice.getSupport(newNode) >= x){               //is frequent
 				PEP(newNode,mfi);
@@ -64,7 +59,7 @@ public class AlgorithmV2 {
 		}
 		
 		/*check c is leaf and c.head not in MFI*/
-		if(lattice.getSupport(c)==0 && !mfi.contains(c)){
+		if(lattice.getAllSubNodes(c).size()==0 && !mfi.contains(c)){
 			mfi.add(c);
 		}
 	}
@@ -74,12 +69,11 @@ public class AlgorithmV2 {
 		PEP(lattice.getRoot(),mfi);
 	}
 	
-	public void HUTMFI(NodeV7 c, List<NodeV7> mfi){
+	public void HUTMFI(NodeV7 c, List<NodeV7> mfi) throws NullArrayException{
 
 		// head union tail
 		String HUTkey = c.getHUT();   // get key of Node Tail
-		//NodeV7 HUT = lattice.getNode(HUTkey);	//create Node HUT
-		NodeV7 HUT = lattice
+		NodeV7 HUT = lattice.getNode(HUTkey); //create Node HUT
 		if (mfi.contains(HUT)){
 			return; 
 		}
@@ -96,7 +90,7 @@ public class AlgorithmV2 {
 	}
 	
 	/* do with HUTMFI */
-	public void doHUTMFI(){
+	public void doHUTMFI() throws NullArrayException{
 		HUTMFI(lattice.getRoot(),mfi);
 	}
 	
@@ -133,7 +127,7 @@ public class AlgorithmV2 {
 				maxTemp.add(index);
 		}
 		
-		NodeV7 node = new NodeV7(maxTemp);
+		NodeV7 node = lattice.getNode(maxTemp);
 		if (isHUT && lattice.getSupport(node) >= x){
 			return;
 		}
